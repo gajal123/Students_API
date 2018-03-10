@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
@@ -12,8 +11,22 @@
             	<button type="button" class="btn btn-default"><a href="{% url 'login'%}">Login</a></button>
                 <button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button>
             {% endif %}
-
-
 		</div>
       <h2>Home</h2>
-    {% endblock %}
+<!--       <script type = "text/javascript" language = "javascript">
+         $(document).ready(function() {
+            $("#driver").click(function(event){
+
+                $('#hello').html($('#stage').load('../api/students'));
+            });
+         });
+      </script> -->
+	<script>
+
+	</script>
+      <div id = "stage" style = "background-color:cc0;">
+      </div>
+	  <div id="hello">
+		{{ students }}
+		</div>
+	  {% endblock %}

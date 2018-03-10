@@ -46,7 +46,15 @@ def logout(request):
     auth.logout(request)
     return redirect('login')
 
+import requests
+
 def home(request):
     if request.user.is_authenticated:
-        return render(request, 'home.html')
+        # todo: change this to a relative url
+        url = 'https://osy0fx6q.apps.lair.io/api/students'
+        students = requests.get(url).json()
+        context = {
+               'students' : students,
+    }
+        return render(request, 'home.html', context)
     return redirect('login')
