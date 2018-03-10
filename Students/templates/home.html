@@ -1,7 +1,19 @@
+
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
 
-{% block content %}
-  <h2>Home</h2>
-{% endblock %}
+    {% block content %}
+		<div class="navbar-collapse navbar-right collapse">
+			User:{{request.user.username}}
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-default"><a href="{% url 'logout'%}">Logout</a></button>
+            {% else %}
+            	<button type="button" class="btn btn-default"><a href="{% url 'login'%}">Login</a></button>
+                <button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button>
+            {% endif %}
+
+
+		</div>
+      <h2>Home</h2>
+    {% endblock %}

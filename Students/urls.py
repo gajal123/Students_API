@@ -7,10 +7,10 @@ from django.views.generic.base import TemplateView
 from Students import views
 
 urlpatterns = [
-    url(r'^home/$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^home/$', views.home, name='home'),
     path('admin/', admin.site.urls),
-    url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, {'template_name': 'logout.html'}, name='logout'),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
     url(r'^register/', views.register, name='register'),
     path('api/', include('students.urls', namespace='students')),
 ]
