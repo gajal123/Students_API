@@ -16,19 +16,20 @@ class Course(models.Model):
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=50, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    user = models.ForeignKey(User , null = True, on_delete=models.CASCADE)
+#     first_name = models.CharField(max_length=50, null=True)
+#     last_name = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
     def __str__(self):
-        return '{} {}'.format(self.first_name, self.last_name)
+        return self.user.username
 
 class StudentCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{} {}'.format(self.student.first_name, self.course.name)
+        return '{} {}'.format(self.student.username, self.course.name)
