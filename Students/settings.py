@@ -25,7 +25,7 @@ SECRET_KEY = 's-06e%a!rb^b!#vfzg&wdqx(r7kv=nm4bmd91^hx+vk%6x*__k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['osy0fx6q.apps.lair.io', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'students'
 ]
 
 MIDDLEWARE = [
@@ -51,10 +53,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Students.urls'
 
+LOGIN_REDIRECT_URL = '/home'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':  [os.path.join(BASE_DIR, 'Students/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
