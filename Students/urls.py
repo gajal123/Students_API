@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'logout.html'}, name='logout'),
     url(r'^register/', views.register, name='register'),
-    path('api/', include('apps.core.urls', namespace='students')),
+    path('api/', include('students.urls', namespace='students')),
 ]
 # urlpatterns += [
 #     path('accounts/', include('django.contrib.auth.urls')),

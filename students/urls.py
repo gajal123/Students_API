@@ -6,6 +6,7 @@ from students.views import StudentViewSet, CourseViewSet, StudentCourseViewSet
 # urlpatterns = [
 #     path('', views.index, name='index'),
 # ]
+app_name = 'students'
 
 router = routers.DefaultRouter()
 router.register(r'students', StudentViewSet)
