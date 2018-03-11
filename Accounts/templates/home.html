@@ -1,18 +1,4 @@
 <script>
-	$(document).ready(function(){
-    $("#menu li").click(function() {
-        $("#menu li").removeClass('active');
-        $(this).addClass("active");
-        $(".menu_content").hide();
-        var selected_tab = $(this).find("a").attr("href");
-        $(selected_tab).fadeIn();
-        return false;
-    });
-});
-
-$('#Cources').click(function() {
-  $('#menu a[href="#Cources"]').tab('show');
-});
 </script>
 {% extends 'base.html' %}
 
@@ -56,7 +42,7 @@ $('#Cources').click(function() {
                        	    <td>
                                 {% if cources %}
                                     {% for course in cources %}
-                                        {{course}}<br/>
+                                        {{course}}&emsp;
                                     {% endfor %}
                                 {% else %}
                                 	None
@@ -69,15 +55,40 @@ $('#Cources').click(function() {
                  </tbody>
               </table>
           </div>
-          	{{student_courses}}<br/>
-          {{student_dict}}<br/>
 	  </div>
 	  <div id="cources" class="tab-pane fade">
-          <p>
-              hello
-          </p>
+          <div>
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th style="width:30%"> User Name</th>
+                          <th> Enrolled in Courses </th>
+                      </tr>
+                  </thead>
+               	 <tbody>
+				 	{% for course, student_name in course_dict.items %}
+                    	<tr>
+                            <td>{{ course }}</td>
+                       	    <td>
+                                {% if student_name %}
+                                    {% for student in student_name %}
+                                        {{student}}&emsp;
+                                    {% endfor %}
+                                {% else %}
+                                	None
+                                {% endif %}
+                            </td>
+						</tr>
+                    {% endfor %}
+                 </tbody>
+              </table>
+          </div>
+
+          	{{student_courses}}<br/>
+          {{student_dict}}<br/>
 
 	   </div>
 </div>
 
+{{course_dict}}
 	  {% endblock %}

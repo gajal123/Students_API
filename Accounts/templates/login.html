@@ -8,8 +8,7 @@
 </div>
 <div class="login-page">
       <p class="message">Not registered? <a href="{% url 'register' %}">Sign Up</a></p>
-     <form action="" method="post">
-            {% csrf_token %}
+     <form action="" method="post">  {% csrf_token %}
             <div class="form-group row">
                 <label for="inputuserName" class="col-sm-2 col-form-label text-success">UserName</label>
                 <div class="col-sm-7">

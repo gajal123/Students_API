@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ['osy0fx6q.apps.lair.io', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-#     'students.apps.StudentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +42,9 @@ INSTALLED_APPS = [
     'students'
 ]
 
+SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Students.urls'
+ROOT_URLCONF = 'Accounts.urls'
 
 LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = '/login'
@@ -61,7 +63,7 @@ LOGOUT_REDIRECT_URL = '/login'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':  [os.path.join(BASE_DIR, 'Students/templates')],
+        'DIRS':  [os.path.join(BASE_DIR, 'Accounts/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Students.wsgi.application'
+WSGI_APPLICATION = 'Accounts.wsgi.application'
 
 
 # Database

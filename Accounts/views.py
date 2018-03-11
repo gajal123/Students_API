@@ -21,15 +21,12 @@ def register(request):
 
 def login(request):
     if request.user.is_authenticated:
-#         messages.error(request, 'Logging In')
         return redirect('home')
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
-#         user = User.objects.filter(username=username, password=password)
-#         messages.error(request, 'got pw')
 
         if user is not None:
             # correct username and password login the user
@@ -53,21 +50,27 @@ def home(request):
         # todo: change this to a relative url
         url = 'https://osy0fx6q.apps.lair.io/api/students'
         students = requests.get(url).json()
-        url = 'https://osy0fx6q.apps.lair.io/api/studentcourses/'
+        url = 'https://osy0fx6q.apps.lair.io/api/studentcourses'
         student_courses = requests.get(url).json()
+        url = 'https://osy0fx6q.apps.lair.io/api/courses'
+        courses = requests.get(url).json()
         student_dict = {}
-        courses = []
+        course_dict = {}
         for student_info in students:
             student_dict[student_info.get('user_name')] = []
+        for course_info in courses:
+            course_dict[course_info.get('name')] = []
         for student_courses_info in student_courses:
             user_name = student_courses_info.get('user_name')
             course = student_courses_info.get('course_name')
             student_dict[user_name].append(course)
+            course_dict[course].append(user_name)
 
         context = {
                'students' : students,
                'student_courses': student_courses,
                'student_dict': student_dict,
+               'course_dict': course_dict,
 
     }
         return render(request, 'home.html', context)
