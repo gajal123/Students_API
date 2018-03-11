@@ -9,6 +9,7 @@ from Accounts import views
 urlpatterns = [
     url(r'^home/$', views.home, name='home'),
     url(r'^delete_course', views.delete_course, name='delete_course'),
+    url(r'^student_enrolls', views.student_enrolls, name='student_enrolls'),
     path('admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),

@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 class Course(models.Model):
     name = models.CharField(max_length=50)
-    no_of_students_enrolled = models.IntegerField(max_length=None, blank=True, default=0)
+    no_of_students_enrolled = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = "Course"

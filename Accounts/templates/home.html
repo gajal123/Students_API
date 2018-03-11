@@ -1,16 +1,13 @@
+<style>
+.tab-content{
+    overflow-y:scroll;
+    position:relative;
+    height: 500px;
+}
+</style>
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
-
     {% block content %}
-		<div class="navbar-collapse navbar-right collapse">
-			User:{{request.user.username}}
-            {% if request.user.is_authenticated %}
-            <button type="button" class="btn btn-default"><a href="{% url 'logout'%}">Logout</a></button>
-            {% else %}
-            	<button type="button" class="btn btn-default"><a href="{% url 'login'%}">Login</a></button>
-                <button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button>
-            {% endif %}
-		</div>
 <!--       <script type = "text/javascript" language = "javascript">
          $(document).ready(function() {
             $("#driver").click(function(event){
@@ -23,29 +20,49 @@
     function delete_course(course){
      console.log(course);
         $.ajax(
-    {
-        type:"GET",
-        url: "/delete_course/",
-        data: {
-            	course: course
-        },
-        success: function( response )
-        {
-            if (response['status'] == 'success') {
-            console.log(response);
-            }
-            else{
+    	{
+            type:"GET",
+            url: "/delete_course/",
+            data: {
+                    course: course,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
                 console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+                location.reload();
             }
-            location.reload();
-        }
-     })
+    	 })
+    }
+    function enroll_student(course){
+        console.log(course);
+         $.ajax(
+    	{
+            type:"GET",
+            url: "/student_enrolls/",
+            data: {
+                    course: course,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+                location.reload();
+            }
+    	 })
     }
 </script>
 <div class="tab-content">
-	<div id="hello" hidden>
-        Hello
-    </div>
      <div id="cources" class="tab-pane fade in active">
           <div>
               <table class="table table-hover">
@@ -74,7 +91,11 @@
                                     {% endif %}
                                 </td>
                             	<td>
-                                    <button type="button" class="btn btn-default">Enroll Students</button>
+                                    {% if student_name|length == 5 %}
+                                        <button type="button" class="btn btn-default" disabled>Course Full</button>
+                                    {% else %}
+                                        <button type="button" class="btn btn-default">Enroll Students</button>
+                                    {% endif %}
                             	</td>
                             	<td>
                             		<button type="button" class="btn btn-default" id="delete_button" onclick="delete_course('{{ course }}')">Delete Course</button>
@@ -83,7 +104,13 @@
                             {% else %}
                             	<td></td>
                             	<td>
-                                    <button type="button" class="btn btn-default">Enroll</button>
+                                    {% if request.user.username in student_name %}
+                                        <button type="button" class="btn btn-default">Leave Course</button>
+                                    {% elif student_name|length == 5 %}
+                                    	<button type="button" class="btn btn-default" disabled>Course Full</button>
+                                    {% else %}
+                                    	<button type="button" class="btn btn-default" onclick="enroll_student('{{ course }}')">Enroll</button>
+                                    {% endif %}
                             	</td>
                             	<td></td>
                             {% endif %}

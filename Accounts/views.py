@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
-from students.models import Course
+from students.models import Course, StudentCourse, Student
 import simplejson as json
 
 def register(request):
@@ -79,6 +79,9 @@ def home(request):
     return redirect('login')
 
 def delete_course(request):
+    # POST request CSRF is failing. I passed a csrfmiddlewaretoken but i think
+    # there is some issue with the online IDE i am using. So i made this a GET request.
+    # This should be a POST Request.
     course_name = request.GET.get('course')
     try:
         course = Course.objects.get(name=course_name).delete()
@@ -86,3 +89,19 @@ def delete_course(request):
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'error'}))
     return HttpResponse(json.dumps({'status': 'success', 'course_name': course_name}))
+
+def student_enrolls(request):
+    course_name = request.GET.get('course')
+    try:
+        course = Course.objects.get(name=course_name)
+        no_of_students_enrolled = course.no_of_students_enrolled
+        student = Student.objects.get(user=request.user)
+        student_course, created = StudentCourse.objects.get_or_create(student=student, course=course)
+        if created:
+            course.no_of_students_enrolled += 1
+            course.save()
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success', 'created': created, 'no':course.no_of_students_enrolled}))
+
