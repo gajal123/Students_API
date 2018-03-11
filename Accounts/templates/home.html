@@ -1,13 +1,10 @@
-<script>
-</script>
 {% extends 'base.html' %}
-
-{% block title %}Login{% endblock %}
+{% block title %}Home{% endblock %}
 
     {% block content %}
 		<div class="navbar-collapse navbar-right collapse">
 			User:{{request.user.username}}
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <button type="button" class="btn btn-default"><a href="{% url 'logout'%}">Logout</a></button>
             {% else %}
             	<button type="button" class="btn btn-default"><a href="{% url 'login'%}">Login</a></button>
@@ -22,11 +19,85 @@
             });
          });
       </script> -->
-	<script>
-
-	</script>
+<script type="text/javascript">
+    function delete_course(course){
+     console.log(course);
+        $.ajax(
+    {
+        type:"GET",
+        url: "/delete_course/",
+        data: {
+            	course: course
+        },
+        success: function( response )
+        {
+            if (response['status'] == 'success') {
+            console.log(response);
+            }
+            else{
+                console.log(response);
+            }
+            location.reload();
+        }
+     })
+    }
+</script>
 <div class="tab-content">
-	  <div id="students" class="tab-pane fade in active">
+	<div id="hello" hidden>
+        Hello
+    </div>
+     <div id="cources" class="tab-pane fade in active">
+          <div>
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th style="width:20%"> Course Name</th>
+                          {% if request.user.is_staff %}
+                          <th style="width:60%"> Enrolled in Courses </th>
+                          <th></th>
+                          <th></th>
+                          {% endif %}
+                      </tr>
+                  </thead>
+               	 <tbody>
+				 	{% for course, student_name in course_dict.items %}
+                    	<tr>
+                            <td>{{ course }}</td>
+                            {% if request.user.is_staff %}
+                                <td>
+                                    {% if student_name %}
+                                        {% for student in student_name %}
+                                            {{student}}&emsp;
+                                        {% endfor %}
+                                    {% else %}
+                                        None
+                                    {% endif %}
+                                </td>
+                            	<td>
+                                    <button type="button" class="btn btn-default">Enroll Students</button>
+                            	</td>
+                            	<td>
+                            		<button type="button" class="btn btn-default" id="delete_button" onclick="delete_course('{{ course }}')">Delete Course</button>
+                            	</td>
+
+                            {% else %}
+                            	<td></td>
+                            	<td>
+                                    <button type="button" class="btn btn-default">Enroll</button>
+                            	</td>
+                            	<td></td>
+                            {% endif %}
+						</tr>
+                    {% endfor %}
+                 </tbody>
+              </table>
+          </div>
+          	{{student_courses}}<br/>
+          {{student_dict}}<br/>
+
+	   </div>
+    {% if request.user.is_staff %}
+	  <div id="students" class="tab-pane fade">
           <div>
               <table class="table table-hover">
                   <thead>
@@ -56,38 +127,8 @@
               </table>
           </div>
 	  </div>
-	  <div id="cources" class="tab-pane fade">
-          <div>
-              <table class="table table-hover">
-                  <thead>
-                      <tr>
-                          <th style="width:30%"> User Name</th>
-                          <th> Enrolled in Courses </th>
-                      </tr>
-                  </thead>
-               	 <tbody>
-				 	{% for course, student_name in course_dict.items %}
-                    	<tr>
-                            <td>{{ course }}</td>
-                       	    <td>
-                                {% if student_name %}
-                                    {% for student in student_name %}
-                                        {{student}}&emsp;
-                                    {% endfor %}
-                                {% else %}
-                                	None
-                                {% endif %}
-                            </td>
-						</tr>
-                    {% endfor %}
-                 </tbody>
-              </table>
-          </div>
+{% endif %}
 
-          	{{student_courses}}<br/>
-          {{student_dict}}<br/>
-
-	   </div>
 </div>
 
 {{course_dict}}

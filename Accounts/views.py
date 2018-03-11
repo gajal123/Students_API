@@ -4,6 +4,8 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
+from students.models import Course
+import simplejson as json
 
 def register(request):
     if request.method == 'POST':
@@ -75,3 +77,12 @@ def home(request):
     }
         return render(request, 'home.html', context)
     return redirect('login')
+
+def delete_course(request):
+    course_name = request.GET.get('course')
+    try:
+        course = Course.objects.get(name=course_name).delete()
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success', 'course_name': course_name}))

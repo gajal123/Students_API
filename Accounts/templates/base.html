@@ -13,8 +13,8 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Students API</title>
       <style>
           body{
@@ -41,16 +41,19 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        <ul class="nav nav-tabs">
-            {% if request.user.is_staff %}
-            <li class="active"><a data-toggle="tab" href="#students"><span class="glyphicon glyphicon-user"></span> Students</a></li>
-            {% endif %}
-            <li><a data-toggle="tab" href="#cources"><span class="glyphicon glyphicon-list-alt"></span> Cources</a></li>
-            <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-            <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
-          </ul>
+        {% if request.user.is_authenticated %}
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#cources"><span class="glyphicon glyphicon-list-alt"></span> Courses</a></li>
+                {% if request.user.is_staff %}
+                	<li><a data-toggle="tab" href="#students"><span class="glyphicon glyphicon-user"></span> Students</a></li>
+                {% endif %}
+
+                <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+                <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+              </ul>
+       {% endif %}
           {% block content %}
-  	      {% endblock %}
+          {% endblock %}
       </div>
 
 

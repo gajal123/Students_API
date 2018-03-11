@@ -10,7 +10,7 @@ class Course(models.Model):
 
     class Meta:
         verbose_name = "Course"
-        verbose_name_plural = "Cources"
+        verbose_name_plural = "Courses"
 
     def __str__(self):
         return '{} - {} Students'.format(self.name, self.no_of_students_enrolled)
