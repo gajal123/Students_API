@@ -99,11 +99,23 @@ def delete_student(request):
         return HttpResponse(json.dumps({'status': 'error'}))
     return HttpResponse(json.dumps({'status': 'success'}))
 
+def leave_course(request):
+    course_name = request.GET.get('course')
+    try:
+        course = Course.objects.get(name=course_name)
+        student = Student.objects.get(user=request.user)
+        student_course= StudentCourse.objects.get(student=student, course=course).delete()
+        course.no_of_students_enrolled -= 1
+        course.save()
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success'}))
+
 def student_enrolls(request):
     course_name = request.GET.get('course')
     try:
         course = Course.objects.get(name=course_name)
-        no_of_students_enrolled = course.no_of_students_enrolled
         student = Student.objects.get(user=request.user)
         student_course, created = StudentCourse.objects.get_or_create(student=student, course=course)
         if created:

@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^home/$', views.home, name='home'),
     url(r'^delete_course', views.delete_course, name='delete_course'),
     url(r'^delete_student', views.delete_student, name='delete_student'),
+    url(r'^leave_course', views.leave_course, name='leave_course'),
     url(r'^student_enrolls', views.student_enrolls, name='student_enrolls'),
     path('admin/', admin.site.urls),
     url(r'^login/$', views.login, name='login'),

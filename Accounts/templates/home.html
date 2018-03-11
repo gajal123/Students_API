@@ -40,7 +40,6 @@
     	 })
     }
     function delete_student(student){
-
      console.log(student);
         $.ajax(
     	{
@@ -61,6 +60,28 @@
                 location.reload();
             }
         })
+    }
+    function leave_course(course){
+        console.log(course);
+         $.ajax(
+    	{
+            type:"GET",
+            url: "/leave_course/",
+            data: {
+                    course: course,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+                location.reload();
+            }
+    	 })
     }
     function enroll_student(course){
         console.log(course);
@@ -128,7 +149,7 @@
                             	<td></td>
                             	<td>
                                     {% if request.user.username in student_name %}
-                                        <button type="button" class="btn btn-default">Leave Course</button>
+                                        <button type="button" class="btn btn-default" onclick="leave_course('{{ course }}')">Leave Course</button>
                                     {% elif student_name|length == 5 %}
                                     	<button type="button" class="btn btn-default" disabled>Course Full</button>
                                     {% else %}
@@ -169,7 +190,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                            	<button type="button" class="btn btn-default" id="delete_button" onclick="delete_student('{{ student_name }}')">Delete Course</button>
+                            	<button type="button" class="btn btn-default" id="delete_button" onclick="delete_student('{{ student_name }}')">Delete Student</button>
                             </td>
 						</tr>
                     {% endfor %}
