@@ -105,9 +105,86 @@
             }
     	 })
     }
+    function enroll_student_in_course(course){
+        console.log(course);
+        student = $('#' + course +  ' :selected').text();
+        console.log(student);
+        $.ajax(
+    	{
+            type:"GET",
+            url: "/enroll_student_in_course/",
+            data: {
+                    course: course,
+                	student: student,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+
+            location.reload();
+            }
+    	 })
+    }
+
+    function remove_student_from_course(student){
+        console.log(student);
+        course = $('#' + student +  ' :selected').text();
+        console.log(course);
+        $.ajax(
+    	{
+            type:"GET",
+            url: "/remove_student_from_course/",
+            data: {
+                    course: course,
+                	student: student,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+
+            location.reload();
+            }
+    	 })
+    }
+    function add_course(){
+        course = $('#course_name').val();
+        console.log(course);
+        $.ajax(
+    	{
+            type:"GET",
+            url: "/add_course/",
+            data: {
+                    course: course,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+
+            location.reload();
+            }
+    	 })
+    }
 </script>
 <div class="tab-content">
-     <div id="cources" class="tab-pane fade in active">
+     <div id="courses" class="tab-pane fade in active">
           <div>
               <table class="table table-hover">
                   <thead>
@@ -137,8 +214,6 @@
                             	<td>
                                     {% if student_name|length == 5 %}
                                         <button type="button" class="btn btn-default" disabled>Course Full</button>
-                                    {% else %}
-                                        <button type="button" class="btn btn-default">Enroll Students</button>
                                     {% endif %}
                             	</td>
                             	<td>
@@ -171,18 +246,19 @@
               <table class="table table-hover">
                   <thead>
                       <tr>
-                          <th style="width:30%"> User Name</th>
-                          <th> Enrolled in Courses </th>
-                          <th></th>
+                          <th style="width:20%"> User Name</th>
+                          <th style="width:20%" > Enrolled in Courses </th>
+                          <th style="width:40%" > Remove Course</th>
+                          <th style="width:20%"></th>
                       </tr>
                   </thead>
                	 <tbody>
-				 	{% for student_name, cources in student_dict.items %}
+				 	{% for student_name, courses in student_dict.items %}
                     	<tr>
                             <td>{{ student_name }}</td>
                        	    <td>
-                                {% if cources %}
-                                    {% for course in cources %}
+                                {% if courses %}
+                                    {% for course in courses %}
                                         {{course}}&emsp;
                                     {% endfor %}
                                 {% else %}
@@ -190,7 +266,68 @@
                                 {% endif %}
                             </td>
                             <td>
+                            	{% if courses %}
+                                	<select class="form-control" id={{student_name}} style="width:60%">
+                                        <option>Select Course</option>
+                                        {% for course in courses %}
+                                            <option value=course>{{ course }}</option>
+                                        {% endfor %}
+                                    </select>
+                            	<button type="button" class="btn btn-default" id="delete_button" onclick="remove_student_from_course('{{ student_name }}')">Remove Student from Course</button>
+                                {% endif %}
+                            </td>
+                            <td>
                             	<button type="button" class="btn btn-default" id="delete_button" onclick="delete_student('{{ student_name }}')">Delete Student</button>
+                            </td>
+						</tr>
+                    {% endfor %}
+
+
+                 </tbody>
+              </table>
+          </div>
+	  </div>
+{% endif %}
+
+ {% if request.user.is_staff %}
+	  <div id="enroll" class="tab-pane fade">
+          <div>
+              <input class="form-control" id="course_name" name="course_name" placeholder="Enter Course Name"/>
+              <button type="button" class="btn btn-default" onclick = "add_course()">Add Course</button>
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th style="width:30%"> Course</th>
+                          <th> Select Student </th>
+                          <th></th>
+                      </tr>
+                  </thead>
+               	 <tbody>
+				 	{% for course, student_name in course_dict.items %}
+                    	<tr>
+                            <td>
+                            	{{ course }}
+                            </td>
+                            <td>
+                                 {% if student_name|length == 5 %}
+                                    	<button type="button" class="btn btn-default" disabled>Course Full</button>
+                                 {% else %}
+                                    <select class="form-control" id={{ course }}>
+                                        <option>Select Student</option>
+                                        {% for student, course_list in student_dict.items %}
+                                        	{% if course not in course_list %}
+                                            	<option value=student>{{ student }}</option>
+                                        	{% endif %}
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </td>
+                            {% if student_name|length == 5 %}
+                            	<td></td>
+                            {% else %}
+                            	<td>
+                            	<button type="button" class="btn btn-default" id="delete_button" onclick="enroll_student_in_course('{{ course }}')">Enroll</button>
+                                {% endif %}
                             </td>
 						</tr>
                     {% endfor %}

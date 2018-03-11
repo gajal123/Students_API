@@ -112,6 +112,35 @@ def leave_course(request):
         return HttpResponse(json.dumps({'status': 'error'}))
     return HttpResponse(json.dumps({'status': 'success'}))
 
+def enroll_student_in_course(request):
+    student_name = request.GET.get('student')
+    course_name = request.GET.get('course')
+    try:
+        course = Course.objects.get(name=course_name)
+        student = Student.objects.get(user__username=student_name)
+        student_course, created = StudentCourse.objects.get_or_create(student=student, course=course)
+        if created:
+            course.no_of_students_enrolled += 1
+            course.save()
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success', 'created': created, 'no':course.no_of_students_enrolled}))
+
+
+def remove_student_from_course(request):
+    course_name = request.GET.get('course')
+    student_name = request.GET.get('student')
+    try:
+        course = Course.objects.get(name=course_name)
+        student = Student.objects.get(user__username=student_name)
+        student_course= StudentCourse.objects.get(student=student, course=course).delete()
+        course.no_of_students_enrolled -= 1
+        course.save()
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success'}))
+
 def student_enrolls(request):
     course_name = request.GET.get('course')
     try:
@@ -124,5 +153,14 @@ def student_enrolls(request):
 
     except Exception as e:
         return HttpResponse(json.dumps({'status': 'error'}))
-    return HttpResponse(json.dumps({'status': 'success', 'created': created, 'no':course.no_of_students_enrolled}))
+    return HttpResponse(json.dumps({'status': 'success'}))
+
+def add_course(request):
+    course_name = request.GET.get('course')
+    try:
+        course, created = Course.objects.get_or_create(name=course_name)
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success'}))
+
 
