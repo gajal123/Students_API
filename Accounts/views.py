@@ -90,6 +90,15 @@ def delete_course(request):
         return HttpResponse(json.dumps({'status': 'error'}))
     return HttpResponse(json.dumps({'status': 'success', 'course_name': course_name}))
 
+def delete_student(request):
+    student_name = request.GET.get('student')
+    try:
+        student = User.objects.get(username=student_name).delete()
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'status': 'error'}))
+    return HttpResponse(json.dumps({'status': 'success'}))
+
 def student_enrolls(request):
     course_name = request.GET.get('course')
     try:

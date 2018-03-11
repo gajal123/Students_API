@@ -39,6 +39,29 @@
             }
     	 })
     }
+    function delete_student(student){
+
+     console.log(student);
+        $.ajax(
+    	{
+            type:"GET",
+            url: "/delete_student/",
+            data: {
+                    student: student,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function( response )
+            {
+                if (response['status'] == 'success') {
+                console.log(response);
+                }
+                else{
+                    console.log(response);
+                }
+                location.reload();
+            }
+        })
+    }
     function enroll_student(course){
         console.log(course);
          $.ajax(
@@ -70,7 +93,7 @@
                       <tr>
                           <th style="width:20%"> Course Name</th>
                           {% if request.user.is_staff %}
-                          <th style="width:60%"> Enrolled in Courses </th>
+                          <th style="width:60%"> Stdents Enrolled in Course </th>
                           <th></th>
                           <th></th>
                           {% endif %}
@@ -119,8 +142,6 @@
                  </tbody>
               </table>
           </div>
-          	{{student_courses}}<br/>
-          {{student_dict}}<br/>
 
 	   </div>
     {% if request.user.is_staff %}
@@ -131,6 +152,7 @@
                       <tr>
                           <th style="width:30%"> User Name</th>
                           <th> Enrolled in Courses </th>
+                          <th></th>
                       </tr>
                   </thead>
                	 <tbody>
@@ -146,6 +168,9 @@
                                 	None
                                 {% endif %}
                             </td>
+                            <td>
+                            	<button type="button" class="btn btn-default" id="delete_button" onclick="delete_student('{{ student_name }}')">Delete Course</button>
+                            </td>
 						</tr>
                     {% endfor %}
 
@@ -157,6 +182,4 @@
 {% endif %}
 
 </div>
-
-{{course_dict}}
 	  {% endblock %}
