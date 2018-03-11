@@ -40,4 +40,4 @@ class StudentCourse(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{} {}'.format(self.student.username, self.course.name)
+        return '{} {}'.format(self.student.user.username, self.course.name)

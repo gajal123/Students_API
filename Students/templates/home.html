@@ -1,3 +1,19 @@
+<script>
+	$(document).ready(function(){
+    $("#menu li").click(function() {
+        $("#menu li").removeClass('active');
+        $(this).addClass("active");
+        $(".menu_content").hide();
+        var selected_tab = $(this).find("a").attr("href");
+        $(selected_tab).fadeIn();
+        return false;
+    });
+});
+
+$('#Cources').click(function() {
+  $('#menu a[href="#Cources"]').tab('show');
+});
+</script>
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
@@ -12,7 +28,6 @@
                 <button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button>
             {% endif %}
 		</div>
-      <h2>Students</h2>
 <!--       <script type = "text/javascript" language = "javascript">
          $(document).ready(function() {
             $("#driver").click(function(event){
@@ -24,9 +39,45 @@
 	<script>
 
 	</script>
-      <div id = "stage" style = "background-color:cc0;">
-      </div>
-	  <div id="hello">
-          {{students}}
+<div class="tab-content">
+	  <div id="students" class="tab-pane fade in active">
+          <div>
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th style="width:30%"> User Name</th>
+                          <th> Enrolled in Courses </th>
+                      </tr>
+                  </thead>
+               	 <tbody>
+				 	{% for student_name, cources in student_dict.items %}
+                    	<tr>
+                            <td>{{ student_name }}</td>
+                       	    <td>
+                                {% if cources %}
+                                    {% for course in cources %}
+                                        {{course}}<br/>
+                                    {% endfor %}
+                                {% else %}
+                                	None
+                                {% endif %}
+                            </td>
+						</tr>
+                    {% endfor %}
+
+
+                 </tbody>
+              </table>
+          </div>
+          	{{student_courses}}<br/>
+          {{student_dict}}<br/>
 	  </div>
+	  <div id="cources" class="tab-pane fade">
+          <p>
+              hello
+          </p>
+
+	   </div>
+</div>
+
 	  {% endblock %}

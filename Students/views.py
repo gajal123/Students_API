@@ -53,8 +53,22 @@ def home(request):
         # todo: change this to a relative url
         url = 'https://osy0fx6q.apps.lair.io/api/students'
         students = requests.get(url).json()
+        url = 'https://osy0fx6q.apps.lair.io/api/studentcourses/'
+        student_courses = requests.get(url).json()
+        student_dict = {}
+        courses = []
+        for student_info in students:
+            student_dict[student_info.get('user_name')] = []
+        for student_courses_info in student_courses:
+            user_name = student_courses_info.get('user_name')
+            course = student_courses_info.get('course_name')
+            student_dict[user_name].append(course)
+
         context = {
                'students' : students,
+               'student_courses': student_courses,
+               'student_dict': student_dict,
+
     }
         return render(request, 'home.html', context)
     return redirect('login')
