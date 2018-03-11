@@ -248,7 +248,7 @@
                       <tr>
                           <th style="width:20%"> User Name</th>
                           <th style="width:20%" > Enrolled in Courses </th>
-                          <th style="width:40%" > Remove Student</th>
+                          <th style="width:40%" > Remove Student from Course</th>
                           <th style="width:20%"></th>
                       </tr>
                   </thead>
@@ -273,7 +273,7 @@
                                             <option value=course>{{ course }}</option>
                                         {% endfor %}
                                     </select>
-                            	<button type="button" class="btn btn-default" id="delete_button" onclick="remove_student_from_course('{{ student_name }}')">Remove Student from Course</button>
+                            	<button type="button" class="btn btn-default" id="delete_button" onclick="remove_student_from_course('{{ student_name }}')">Remove</button>
                                 {% endif %}
                             </td>
                             <td>
@@ -298,7 +298,7 @@
                   <thead>
                       <tr>
                           <th style="width:30%"> Course</th>
-                          <th> Select Student </th>
+                          <th> Enroll Student in Course </th>
                           <th></th>
                       </tr>
                   </thead>
