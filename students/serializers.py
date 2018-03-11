@@ -18,4 +18,4 @@ class StudentCourseSerializer(serializers.ModelSerializer):
     course_name = serializers.CharField(source='course.name', read_only=True)
     class Meta:
         model = StudentCourse
-        fields = ('id', 'student', 'course', 'user_name', 'course_name')
+        fields = ('id', 'user_name', 'course_name')
