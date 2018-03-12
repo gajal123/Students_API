@@ -3,9 +3,6 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="navbar-collapse navbar-right collapse">
-    <button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button>
-</div>
 <div class="login-page">
       <p class="message">Not registered? <a href="{% url 'register' %}">Sign Up</a></p>
      <form action="" method="post">  {% csrf_token %}
