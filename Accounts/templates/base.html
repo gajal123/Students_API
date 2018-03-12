@@ -40,6 +40,7 @@
                     <li><a data-toggle="tab" href="#cources"><span class="glyphicon glyphicon-list-alt"></span> Courses</a></li>
                     {% if request.user.is_staff %}
                         <li><a data-toggle="tab" href="#students"><span class="glyphicon glyphicon-user"></span> Students</a></li>
+                    {% endif %}
                     <li><a data-toggle="tab" href="#enroll">Enroll Students</a></li>
                         {% if request.user.is_authenticated %}
                             <li style="float:right"><button type="button" class="btn btn-default"><a href="{% url 'logout'%}">Logout</a></button><br/></li>
@@ -47,9 +48,9 @@
                         	<li style="float:right"><button type="button" class="btn btn-default"><a href="{% url 'login'%}">Login</a></button></li>
                         <li style="float:right"><button type="button" class="btn btn-default"><a href="{% url 'register'%}">Register</a></button><br/></li>
                         {% endif %}
-                    {% endif %}
+
             </ul>
-                    {% endif %}
+            {% endif %}
 
           {% block content %}
           {% endblock %}
